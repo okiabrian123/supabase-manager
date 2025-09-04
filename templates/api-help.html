@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Access Help - {{.project}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-green-400">
+                <i class="fas fa-key mr-2"></i>
+                API Access Help for {{.project}}
+            </h1>
+            <a href="/" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        <!-- API Information -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 mb-8">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="text-xl font-semibold">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    API Access Information
+                </h2>
+            </div>
+            <div class="p-6">
+                <p class="mb-4">
+                    To access the API for project <strong>{{.project}}</strong>, you need to provide an API key in your requests.
+                    The Supabase API Gateway (Kong) requires this for security purposes.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Anonymous Key -->
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-600">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-400">
+                            <i class="fas fa-user mr-2"></i>
+                            Anonymous Key
+                        </h3>
+                        <p class="text-sm text-gray-400 mb-3">For public/unauthenticated access</p>
+                        <div class="text-sm font-mono bg-gray-800 px-3 py-2 rounded break-words">
+                            {{.anonymousKey}}
+                        </div>
+                        <button onclick="copyToClipboard('{{.anonymousKey}}')" 
+                                class="text-xs text-blue-400 hover:text-blue-300 mt-2">
+                            <i class="fas fa-copy mr-1"></i>
+                            Copy Key
+                        </button>
+                    </div>
+                    
+                    <!-- Service Role Key -->
+                    <div class="bg-gray-900 p-4 rounded-lg border border-gray-600">
+                        <h3 class="font-semibold text-lg mb-2 text-purple-400">
+                            <i class="fas fa-user-shield mr-2"></i>
+                            Service Role Key
+                        </h3>
+                        <p class="text-sm text-gray-400 mb-3">For admin/privileged access</p>
+                        <div class="text-sm font-mono bg-gray-800 px-3 py-2 rounded break-words">
+                            {{.serviceRoleKey}}
+                        </div>
+                        <button onclick="copyToClipboard('{{.serviceRoleKey}}')" 
+                                class="text-xs text-blue-400 hover:text-blue-300 mt-2">
+                            <i class="fas fa-copy mr-1"></i>
+                            Copy Key
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usage Examples -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 mb-8">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="text-xl font-semibold">
+                    <i class="fas fa-code mr-2"></i>
+                    Usage Examples
+                </h2>
+            </div>
+            <div class="p-6">
+                <h3 class="font-semibold text-lg mb-3">Access {{.project}} tables:</h3>
+                
+                <div class="mb-6">
+                    <h4 class="font-medium mb-2">Get users data:</h4>
+                    <div class="text-sm font-mono bg-gray-900 px-4 py-3 rounded mb-2 break-words">
+                        curl -H "apikey: {{.anonymousKey}}" \<br>
+                        &nbsp;&nbsp;{{.apiEndpoint}}/rest/v1/{{.project}}_users?select=*
+                    </div>
+                    <button onclick="copyToClipboard('curl -H &quot;apikey: {{.anonymousKey}}&quot; \\\n  {{.apiEndpoint}}/rest/v1/{{.project}}_users?select=*')" 
+                            class="text-xs text-blue-400 hover:text-blue-300">
+                        <i class="fas fa-copy mr-1"></i>
+                        Copy Command
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="font-medium mb-2">Get posts data:</h4>
+                    <div class="text-sm font-mono bg-gray-900 px-4 py-3 rounded mb-2 break-words">
+                        curl -H "apikey: {{.anonymousKey}}" \<br>
+                        &nbsp;&nbsp;{{.apiEndpoint}}/rest/v1/{{.project}}_posts?select=*
+                    </div>
+                    <button onclick="copyToClipboard('curl -H &quot;apikey: {{.anonymousKey}}&quot; \\\n  {{.apiEndpoint}}/rest/v1/{{.project}}_posts?select=*')" 
+                            class="text-xs text-blue-400 hover:text-blue-300">
+                        <i class="fas fa-copy mr-1"></i>
+                        Copy Command
+                    </button>
+                </div>
+                
+                <div>
+                    <h4 class="font-medium mb-2">Insert new data (requires Service Role Key):</h4>
+                    <div class="text-sm font-mono bg-gray-900 px-4 py-3 rounded mb-2 break-words">
+                        curl -X POST \<br>
+                        &nbsp;&nbsp;-H "apikey: {{.serviceRoleKey}}" \<br>
+                        &nbsp;&nbsp;-H "Content-Type: application/json" \<br>
+                        &nbsp;&nbsp;-H "Prefer: return=representation" \<br>
+                        &nbsp;&nbsp;-d '{"email": "user@example.com", "name": "John Doe"}' \<br>
+                        &nbsp;&nbsp;{{.apiEndpoint}}/rest/v1/{{.project}}_users
+                    </div>
+                    <button onclick="copyToClipboard('curl -X POST \\\n  -H &quot;apikey: {{.serviceRoleKey}}&quot; \\\n  -H &quot;Content-Type: application/json&quot; \\\n  -H &quot;Prefer: return=representation&quot; \\\n  -d &apos;{\"email\": \"user@example.com\", \"name\": \"John Doe\"}&apos; \\\n  {{.apiEndpoint}}/rest/v1/{{.project}}_users')" \n                            class="text-xs text-blue-400 hover:text-blue-300">\n                        <i class="fas fa-copy mr-1"></i>\n                        Copy Command\n                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Browser Access Note -->
+        <div class="bg-yellow-900/30 border border-yellow-700 rounded-lg p-6">
+            <h3 class="font-semibold text-lg mb-2 text-yellow-400">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                Browser Access Limitation
+            </h3>
+            <p class="mb-3">
+                When accessing API endpoints directly in a web browser, you cannot set custom headers.
+                This is why you see the "No API key found in request" error.
+            </p>
+            <p>
+                For browser-based testing, use browser developer tools to add the API key header,
+                or use the curl commands above in your terminal.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Show a temporary success message
+                const originalBody = document.body.innerHTML;
+                const successMessage = `
+                    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div class="bg-gray-800 p-6 rounded-lg border border-green-500">
+                            <div class="flex items-center text-green-400">
+                                <i class="fas fa-check-circle text-2xl mr-3"></i>
+                                <span class="text-lg font-semibold">Copied to clipboard!</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', successMessage);
+                
+                // Remove the message after 2 seconds
+                setTimeout(() => {
+                    if (document.body.lastChild) {
+                        document.body.removeChild(document.body.lastChild);
+                    }
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

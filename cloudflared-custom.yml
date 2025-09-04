@@ -1,0 +1,15 @@
+tunnel: a8b5c87a-f853-4a0d-b4a2-6c26620079ec
+credentials-file: /root/.cloudflared/a8b5c87a-f853-4a0d-b4a2-6c26620079ec.json
+
+ingress:
+  # Route for your custom domain pointing to Supabase Manager
+  - hostname: supabase.okiabrian.my.id
+    service: http://localhost:8090
+  # Route for Supabase API
+  - hostname: api.supabase.okiabrian.my.id
+    service: http://localhost:8081
+  # Route for Supabase Studio
+  - hostname: studio.supabase.okiabrian.my.id
+    service: http://localhost:3001
+  # Fallback route
+  - service: http_status:404

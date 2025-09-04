@@ -1,0 +1,29 @@
+# Supabase Manager Configuration
+
+# Server settings
+server:
+  port: 8090
+  host: "0.0.0.0"
+
+# Database settings
+database:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "postgres"
+  name: "postgres"
+  sslmode: "disable"
+
+# Docker settings
+docker:
+  socket: "/var/run/docker.sock"
+
+# Logging settings
+log:
+  level: "info"
+  format: "json"
+
+# Authentication settings
+auth:
+  username: "admin"
+  password: "supabase123"

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8" x-data="dashboard()">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-green-400">
+                <i class="fas fa-database mr-2"></i>
+                Supabase Project Manager
+            </h1>
+            <div class="flex space-x-4">
+                <button @click="refreshStatus()" 
+                        class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    Refresh
+                </button>
+                <button @click="showCreateProject = true" 
+                        class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-plus mr-2"></i>
+                    New Project
+                </button>
+            </div>
+        </div>
+
+        <!-- Docker Status -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                <h3 class="text-lg font-semibold mb-2">
+                    <i class="fab fa-docker text-blue-400 mr-2"></i>
+                    Docker Status
+                </h3>
+                <div class="flex items-center">
+                    <div class="w-3 h-3 rounded-full mr-2" 
+                         :class="dockerStatus.running ? 'bg-green-500' : 'bg-red-500'"></div>
+                    <span x-text="dockerStatus.running ? 'Running' : 'Stopped'"></span>
+                </div>
+                <p class="text-sm text-gray-400 mt-1" x-text="`${dockerStatus.services.length} services`"></p>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                <h3 class="text-lg font-semibold mb-2">
+                    <i class="fas fa-folder text-yellow-400 mr-2"></i>
+                    Total Projects
+                </h3>
+                <div class="text-2xl font-bold text-green-400" x-text="projects.length"></div>
+                <p class="text-sm text-gray-400">Active projects</p>
+            </div>
+
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+                <h3 class="text-lg font-semibold mb-2">
+                    <i class="fas fa-server text-purple-400 mr-2"></i>
+                    API Endpoint
+                </h3>
+                <div class="text-sm font-mono bg-gray-900 px-3 py-2 rounded">
+                    {{.apiEndpoint}}
+                </div>
+                <button @click="copyToClipboard('{{.apiEndpoint}}')" 
+                        class="text-xs text-blue-400 hover:text-blue-300 mt-1">
+                    Copy URL
+                </button>
+                <div class="mt-3 text-xs text-gray-400">
+                    <p class="mb-1"><strong>API Keys:</strong></p>
+                    <p class="font-mono bg-gray-900 p-2 rounded mb-1">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0</p>
+                    <p class="text-xs">(Anonymous Key - for public access)</p>
+                    <p class="mt-2">For project-specific endpoints, click "Open" on a project to see its API documentation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects List -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="text-xl font-semibold">
+                    <i class="fas fa-list mr-2"></i>
+                    Projects
+                </h2>
+            </div>
+
+            <div class="p-6">
+                <div x-show="projects.length === 0" class="text-center py-8 text-gray-400">
+                    <i class="fas fa-folder-open text-4xl mb-4"></i>
+                    <p>No projects yet. Create your first project!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <template x-for="project in projects" :key="project.name">
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-600 hover:border-green-500 transition-colors">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-semibold text-lg" x-text="project.name"></h3>
+                                <button @click="deleteProject(project.name)" 
+                                        class="text-red-400 hover:text-red-300 text-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="text-sm text-gray-400 mb-3">
+                                <i class="fas fa-table mr-1"></i>
+                                <span x-text="`${project.tables.length} tables`"></span>
+                            </div>
+
+                            <div class="flex space-x-2">
+                                <button @click="openProject(project.name)" 
+                                        class="flex-1 bg-green-600 hover:bg-green-700 px-3 py-2 rounded text-sm transition-colors">
+                                    <i class="fas fa-external-link-alt mr-1"></i>
+                                    Open
+                                </button>
+                                <button @click="showTables(project.name)" 
+                                        class="flex-1 bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded text-sm transition-colors">
+                                    <i class="fas fa-database mr-1"></i>
+                                    Tables
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Project Modal -->
+        <div x-show="showCreateProject" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 w-full max-w-md mx-4">
+                <h3 class="text-xl font-semibold mb-4">
+                    <i class="fas fa-plus-circle mr-2 text-green-400"></i>
+                    Create New Project
+                </h3>
+                
+                <form @submit.prevent="createProject()">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2">Project Name</label>
+                        <input x-model="newProject.name" 
+                               type="text" 
+                               placeholder="e.g., ecommerce, blog, portfolio"
+                               class="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:border-green-500 focus:outline-none"
+                               required>
+                        <p class="text-xs text-gray-400 mt-1">Lowercase letters, numbers, and underscores only</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Description (optional)</label>
+                        <textarea x-model="newProject.description" 
+                                  placeholder="Brief description of your project"
+                                  class="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:border-green-500 focus:outline-none h-20 resize-none"></textarea>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button type="button" 
+                                @click="showCreateProject = false; resetForm()"
+                                class="flex-1 bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                :disabled="loading"
+                                class="flex-1 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors disabled:opacity-50">
+                            <span x-show="!loading">Create Project</span>
+                            <span x-show="loading">Creating...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div x-show="message" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:leave="transition ease-in duration-300"
+             class="fixed top-4 right-4 p-4 rounded-lg border z-50"
+             :class="messageType === 'success' ? 'bg-green-800 border-green-600 text-green-100' : 'bg-red-800 border-red-600 text-red-100'">
+            <div class="flex items-center">
+                <i :class="messageType === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'" class="mr-2"></i>
+                <span x-text="message"></span>
+                <button @click="message = ''" class="ml-4 text-lg">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function dashboard() {
+            return {
+                projects: JSON.parse('{{.projects}}'),
+                dockerStatus: JSON.parse('{{.dockerStatus}}'),
+                showCreateProject: false,
+                loading: false,
+                message: '',
+                messageType: 'success',
+                newProject: {
+                    name: '',
+                    description: ''
+                },
+
+                async refreshStatus() {
+                    try {
+                        const [projectsRes, dockerRes] = await Promise.all([
+                            fetch('/projects'),
+                            fetch('/docker/status')
+                        ]);
+                        
+                        this.projects = await projectsRes.json();
+                        this.dockerStatus = await dockerRes.json();
+                        
+                        this.showMessage('Status refreshed', 'success');
+                    } catch (error) {
+                        this.showMessage('Failed to refresh status', 'error');
+                    }
+                },
+
+                async createProject() {
+                    if (!this.newProject.name.trim()) return;
+                    
+                    this.loading = true;
+                    
+                    try {
+                        const response = await fetch('/projects', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.newProject)
+                        });
+
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            this.showMessage(result.message, 'success');
+                            this.showCreateProject = false;
+                            this.resetForm();
+                            await this.refreshStatus();
+                        } else {
+                            this.showMessage(result.error, 'error');
+                        }
+                    } catch (error) {
+                        this.showMessage('Failed to create project', 'error');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async deleteProject(projectName) {
+                    if (!confirm(`Are you sure you want to delete project "${projectName}"? This action cannot be undone.`)) {
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`/projects/${projectName}`, {
+                            method: 'DELETE'
+                        });
+
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            this.showMessage(result.message, 'success');
+                            await this.refreshStatus();
+                        } else {
+                            this.showMessage(result.error, 'error');
+                        }
+                    } catch (error) {
+                        this.showMessage('Failed to delete project', 'error');
+                    }
+                },
+
+                openProject(projectName) {
+                    // Open API help page for the project
+                    window.location.href = `/api-help/${projectName}`;
+                },
+
+                async showTables(projectName) {
+                    try {
+                        const response = await fetch(`/projects/${projectName}/tables`);
+                        const result = await response.json();
+                        
+                        const tablesList = result.tables.join(', ') || 'No tables';
+                        alert(`Tables in ${projectName}:\n${tablesList}`);
+                    } catch (error) {
+                        this.showMessage('Failed to fetch tables', 'error');
+                    }
+                },
+
+                resetForm() {
+                    this.newProject = { name: '', description: '' };
+                },
+
+                showMessage(text, type = 'success') {
+                    this.message = text;
+                    this.messageType = type;
+                    setTimeout(() => this.message = '', 5000);
+                },
+
+                copyToClipboard(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.showMessage('URL copied to clipboard!', 'success');
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
