@@ -64,6 +64,20 @@ The application uses the following environment variables:
 
 All configuration values must be provided through environment variables. The application will not use hardcoded defaults.
 
+## Database Initialization
+
+When the PostgreSQL container is first created, the initialization scripts in `volumes/db/init/` are automatically executed to create the required schemas and tables. However, if you restart the container with existing data, these scripts are not executed again.
+
+If you encounter errors related to missing tables or schemas (such as "relation 'auth.users' does not exist"), you can manually run the initialization scripts using:
+
+```bash
+./run-db-init.sh
+```
+
+This script will:
+1. Execute all database initialization scripts
+2. Restart all Supabase services to ensure they can connect properly
+
 ## Authentication
 
 The Supabase Manager now includes basic authentication to secure access to the dashboard and API endpoints. The default credentials are:

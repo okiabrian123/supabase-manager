@@ -67,3 +67,12 @@ Usage:
 ```bash
 ./check-tunnel.sh
 ```
+
+## run-db-init.sh
+
+Manually runs the database initialization scripts and restarts all services. This should be used when the database container is restarted with existing data and the initialization scripts need to be run again.
+
+Usage:
+```bash
+./run-db-init.sh
+```
