@@ -45,9 +45,24 @@ For a detailed technical breakdown of each component, see [docs/SUPABASE_MANAGER
 ## Setup
 
 1. Clone this repository
-2. Configure your environment variables in `.env` file
-3. Update `config.yaml` with your database settings and authentication credentials
-4. Configure Cloudflare Tunnel credentials in `/root/.cloudflared/`
+2. Copy `env.example` to `.env` and configure your environment variables:
+   ```bash
+   cp env.example .env
+   ```
+3. Update the values in `.env` to match your custom domains and configuration
+4. Update `config.yaml` with your database settings and authentication credentials
+5. Configure Cloudflare Tunnel credentials in `/root/.cloudflared/`
+
+## Environment Variables
+
+The application uses the following environment variables:
+
+- `DATABASE_URL` - PostgreSQL connection URL
+- `PORT` - Port for the Supabase Manager application (default: 8090)
+- `SUPABASE_API_ENDPOINT` - Your custom domain for the Supabase API
+- `SUPABASE_STUDIO_DOMAIN` - Your custom domain for Supabase Studio
+
+All configuration values must be provided through environment variables. The application will not use hardcoded defaults.
 
 ## Authentication
 
