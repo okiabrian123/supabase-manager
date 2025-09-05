@@ -270,8 +270,43 @@
                 },
 
                 openProject(projectName) {
-                    // Open API help page for the project
-                    window.location.href = `/api-help/${projectName}`;
+                    // Show options to access Supabase Studio
+                    // Get domain names from environment variables passed through template
+                    const studioDomain = '{{.studioDomain}}';
+                    // Remove the protocol if it exists to avoid duplication
+                    const cleanStudioDomain = studioDomain.replace(/^https?:\/\//, '');
+                    const customDomainUrl = `https://${cleanStudioDomain}/project/default?project=${projectName}`;
+                    const localhostUrl = `http://localhost:3001/project/default?project=${projectName}`;
+                    
+                    const message = `Choose how to access the Supabase Studio for project "${projectName}":\n\n` +
+                                  `1. Try custom domain (might not work immediately due to DNS propagation):\n` +
+                                  `   ${customDomainUrl}\n\n` +
+                                  `2. Try localhost (requires local access):\n` +
+                                  `   ${localhostUrl}\n\n` +
+                                  `Click OK to try the custom domain, or Cancel to see options.`;
+                    
+                    if (confirm(message)) {
+                        // Try to open the custom domain URL
+                        const newWindow = window.open(customDomainUrl, '_blank');
+                        
+                        // If the window was blocked or failed to open, show instructions
+                        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                            alert(`Failed to open automatically. Please manually visit:\n${customDomainUrl}\n\n` +
+                                  `If that doesn't work, try:\n${localhostUrl}`);
+                        }
+                    } else {
+                        // Show detailed instructions
+                        alert(`To access the Supabase Studio for project "${projectName}":\n\n` +
+                              `Option 1 - Custom Domain:\n` +
+                              `  URL: ${customDomainUrl}\n` +
+                              `  Note: DNS propagation may take some time\n\n` +
+                              `Option 2 - Local Access:\n` +
+                              `  URL: ${localhostUrl}\n` +
+                              `  Note: Only works when accessing from the same machine\n\n` +
+                              `Option 3 - Direct Docker Access:\n` +
+                              `  URL: http://YOUR_SERVER_IP:3001/project/default?project=${projectName}\n` +
+                              `  Note: Replace YOUR_SERVER_IP with your actual server IP`);
+                    }
                 },
 
                 async showTables(projectName) {

@@ -52,6 +52,6 @@ fi
 
 echo ""
 echo "📋 To test custom domain accessibility, try:"
-echo "   curl -I https://supabase.okiabrian.my.id"
-echo "   curl -I https://api.supabase.okiabrian.my.id"
-echo "   curl -I https://studio.supabase.okiabrian.my.id"
+echo "   curl -I https://supabase-okiabrian.my.id"
+echo "   curl -I https://api-supabase-okiabrian.my.id"
+echo "   curl -I https://studio-supabase-okiabrian.my.id"

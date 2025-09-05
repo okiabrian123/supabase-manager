@@ -1,4 +1,4 @@
-# Cloudflare Tunnel Setup for supabase.okiabrian.my.id
+# Cloudflare Tunnel Setup for supabase-okiabrian.my.id
 
 ## Prerequisites
 
@@ -65,7 +65,7 @@ cd /root/supabase_multi-instance
 
 Once configured, you can access the Supabase Manager at:
 - Local: http://localhost:8090
-- Public: http://supabase.okiabrian.my.id
+- Public: http://supabase-okiabrian.my.id
 
 ## Stopping the Services
 

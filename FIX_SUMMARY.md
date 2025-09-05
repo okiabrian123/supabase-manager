@@ -45,6 +45,6 @@ Setelah perbaikan ini, sistem seharusnya berfungsi dengan baik dengan:
 - Pastikan file kredensial Cloudflare ada di lokasi `/root/.cloudflared/a8b5c87a-f853-4a0d-b4a2-6c26620079ec.json`
 - Pastikan domain kustom sudah dikonfigurasi dengan benar di Cloudflare untuk mengarah ke tunnel
 - Setelah menjalankan sistem, uji akses ke semua endpoint:
-  - Manager: https://supabase.okiabrian.my.id
-  - API: https://api.supabase.okiabrian.my.id
-  - Studio: https://studio.supabase.okiabrian.my.id
+  - Manager: https://supabase-okiabrian.my.id
+  - API: https://api-supabase-okiabrian.my.id
+  - Studio: https://studio-supabase-okiabrian.my.id

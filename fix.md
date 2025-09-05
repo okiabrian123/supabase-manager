@@ -30,13 +30,13 @@ This document outlines the steps taken to fix the custom domain configuration fo
   ```yaml
   ingress:
     # Route for your custom domain pointing to Supabase Manager
-    - hostname: supabase.okiabrian.my.id
+    - hostname: supabase-okiabrian.my.id
       service: http://localhost:8090
     # Route for Supabase API
-    - hostname: api.supabase.okiabrian.my.id
+    - hostname: api-supabase-okiabrian.my.id
       service: http://localhost:8081
     # Route for Supabase Studio
-    - hostname: studio.supabase.okiabrian.my.id
+    - hostname: studio-supabase-okiabrian.my.id
       service: http://localhost:3001
     # Fallback route
     - service: http_status:404
@@ -89,7 +89,7 @@ This document outlines the steps taken to fix the custom domain configuration fo
 - ✅ Cloudflare Tunnel is running with proper configuration
 - ✅ Docker containers are up (manager, database, and full stack)
 - ✅ Temporary schemas are properly filtered out from project listings
-- ⚠️ Need to verify accessibility of custom domains (supabase.okiabrian.my.id, api.supabase.okiabrian.my.id, studio.supabase.okiabrian.my.id)
+- ⚠️ Need to verify accessibility of custom domains (supabase-okiabrian.my.id, api-supabase-okiabrian.my.id, studio-supabase-okiabrian.my.id)
 
 ## Testing Instructions
 1. Run `./start-all.sh` to start all services
@@ -100,9 +100,9 @@ This document outlines the steps taken to fix the custom domain configuration fo
    - API: http://localhost:8081
    - Studio: http://localhost:3001
 5. Test custom domain access:
-   - Manager: https://supabase.okiabrian.my.id
-   - API: https://api.supabase.okiabrian.my.id
-   - Studio: https://studio.supabase.okiabrian.my.id
+   - Manager: https://supabase-okiabrian.my.id
+   - API: https://api-supabase-okiabrian.my.id
+   - Studio: https://studio-supabase-okiabrian.my.id
 6. To stop all services, run `./stop-all.sh`
 
 ## API Usage

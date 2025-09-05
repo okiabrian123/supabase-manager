@@ -9,6 +9,7 @@ services:
       - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres?sslmode=disable
       - PORT=8090
       - SUPABASE_API_ENDPOINT=${SUPABASE_API_ENDPOINT}
+      - SUPABASE_STUDIO_DOMAIN=${SUPABASE_STUDIO_DOMAIN}
     depends_on:
       - db
     volumes:

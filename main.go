@@ -165,14 +165,18 @@ func (dm *DatabaseManager) dashboardHandler(c *gin.Context) {
 	projectsJSON, _ := json.Marshal(projects)
 	dockerStatusJSON, _ := json.Marshal(dockerStatus)
 
-	// Get API endpoint from environment or use default
-	apiEndpoint := getEnv("SUPABASE_API_ENDPOINT", "https://api.supabase.okiabrian.my.id")
+	// Get API endpoint from environment
+	apiEndpoint := getEnv("SUPABASE_API_ENDPOINT", "")
+	
+	// Get Studio domain from environment
+	studioDomain := getEnv("SUPABASE_STUDIO_DOMAIN", "")
 
 	c.HTML(http.StatusOK, "dashboard.html", gin.H{
 		"projects":     string(projectsJSON),
 		"dockerStatus": string(dockerStatusJSON),
 		"title":        "Supabase Project Manager",
 		"apiEndpoint":  apiEndpoint,
+		"studioDomain": studioDomain,
 	})
 }
 
@@ -284,7 +288,7 @@ func (dm *DatabaseManager) dockerRestart(c *gin.Context) {
 
 func (dm *DatabaseManager) apiHelpHandler(c *gin.Context) {
 	projectName := c.Param("project")
-	apiEndpoint := getEnv("SUPABASE_API_ENDPOINT", "https://api.supabase.okiabrian.my.id")
+	apiEndpoint := getEnv("SUPABASE_API_ENDPOINT", "")
 
 	anonymousKey := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
 	serviceRoleKey := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU"

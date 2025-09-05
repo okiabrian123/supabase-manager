@@ -1,3 +1,18 @@
+-- Create required roles if they don't exist
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
+    CREATE ROLE anon;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
+    CREATE ROLE authenticated;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role') THEN
+    CREATE ROLE service_role;
+  END IF;
+END
+$$;
+
 -- Create auth schema and required tables
 CREATE SCHEMA IF NOT EXISTS auth;
 
@@ -124,21 +139,6 @@ CREATE TABLE IF NOT EXISTS auth.mfa_challenges (
     ip_address inet NOT NULL,
     CONSTRAINT mfa_challenges_pkey PRIMARY KEY (id)
 );
-
--- Create anon and authenticated roles if they don't exist
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
-    CREATE ROLE anon;
-  END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
-    CREATE ROLE authenticated;
-  END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'service_role') THEN
-    CREATE ROLE service_role;
-  END IF;
-END
-$$;
 
 -- Grant permissions
 GRANT USAGE ON SCHEMA auth TO anon, authenticated, service_role;

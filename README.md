@@ -86,9 +86,9 @@ For detailed documentation of these scripts, see [SCRIPTS.md](SCRIPTS.md).
 
 ## Custom Domains
 
-- Manager: https://supabase.okiabrian.my.id
-- API: https://api.supabase.okiabrian.my.id
-- Studio: https://studio.supabase.okiabrian.my.id
+- Manager: https://supabase-okiabrian.my.id
+- API: https://api-supabase-okiabrian.my.id
+- Studio: https://studio-supabase-okiabrian.my.id
 
 ## API Usage
 

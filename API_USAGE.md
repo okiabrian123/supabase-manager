@@ -5,13 +5,13 @@ This guide explains how to use the Supabase API that's running in your multi-ins
 ## API Access Points
 
 ### 1. Via Custom Domains (HTTPS - Recommended)
-- **Manager Dashboard**: https://supabase.okiabrian.my.id
-- **API Endpoint**: https://api.supabase.okiabrian.my.id
-- **Studio Interface**: https://studio.supabase.okiabrian.my.id
+- **Manager Dashboard**: https://supabase-okiabrian.my.id
+- **API Endpoint**: https://api-supabase-okiabrian.my.id
+- **Studio Interface**: https://studio-supabase-okiabrian.my.id
 
 ### 2. Via HTTP (Temporary Workaround for SSL Issues)
-- **API Endpoint**: http://api.supabase.okiabrian.my.id
-- **Studio Interface**: http://studio.supabase.okiabrian.my.id
+- **API Endpoint**: http://api-supabase-okiabrian.my.id
+- **Studio Interface**: http://studio-supabase-okiabrian.my.id
 
 ### 3. Via Localhost
 - **Manager Dashboard**: http://localhost:8090
@@ -24,7 +24,7 @@ The manager dashboard provides a web interface to manage your Supabase projects:
 
 1. **Access the dashboard**:
    - Local: http://localhost:8090
-   - Public: https://supabase.okiabrian.my.id
+   - Public: https://supabase-okiabrian.my.id
 
 2. **Create a new project**:
    - Click "New Project" button
@@ -101,7 +101,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InN
 
 Use these keys in the Authorization header:
 ```bash
-curl https://api.supabase.okiabrian.my.id/rest/v1/myproject_users?select=* 
+curl https://api-supabase-okiabrian.my.id/rest/v1/myproject_users?select=* 
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" 
   -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
 ```
@@ -117,7 +117,7 @@ curl -X POST http://localhost:8090/projects
   -d '{"name": "ecommerce", "description": "E-commerce application"}'
 
 # Add a user to the ecommerce project
-curl -X POST https://api.supabase.okiabrian.my.id/rest/v1/ecommerce_users 
+curl -X POST https://api-supabase-okiabrian.my.id/rest/v1/ecommerce_users 
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU" 
   -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" 
   -H "Content-Type: application/json" 
@@ -125,14 +125,14 @@ curl -X POST https://api.supabase.okiabrian.my.id/rest/v1/ecommerce_users
   -d '{"email": "user@example.com", "name": "John Doe"}'
 
 # Get all users from the ecommerce project
-curl https://api.supabase.okiabrian.my.id/rest/v1/ecommerce_users?select=* 
+curl https://api-supabase-okiabrian.my.id/rest/v1/ecommerce_users?select=* 
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" 
   -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
 ```
 
 ### 2. Using the Studio Interface
 
-1. Access the Studio at http://localhost:3001 or http://studio.supabase.okiabrian.my.id
+1. Access the Studio at http://localhost:3001 or http://studio-supabase-okiabrian.my.id
 2. The Studio provides a web-based interface for:
    - Browsing tables and data
    - Running SQL queries

@@ -19,14 +19,14 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InN
 ### Method 1: Using the `apikey` header
 ```bash
 curl -H "apikey: YOUR_API_KEY" \
-  https://api-supabase.okiabrian.my.id/rest/v1/your_table?select=*
+  https://api-supabase-okiabrian.my.id/rest/v1/your_table?select=*
 ```
 
 ### Method 2: Using the `Authorization` header
 ```bash
 curl -H "Authorization: Bearer YOUR_API_KEY" \
   -H "apikey: YOUR_API_KEY" \
-  https://api-supabase.okiabrian.my.id/rest/v1/your_table?select=*
+  https://api-supabase-okiabrian.my.id/rest/v1/your_table?select=*
 ```
 
 ## Example Usage
@@ -35,7 +35,7 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 ```bash
 # Replace 'myproject' with your actual project name
 curl -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0" \
-  https://api-supabase.okiabrian.my.id/rest/v1/myproject_users?select=*
+  https://api-supabase-okiabrian.my.id/rest/v1/myproject_users?select=*
 ```
 
 ### Insert data into a project table
@@ -45,7 +45,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Prefer: return=representation" \
   -d '{"email": "user@example.com", "name": "John Doe"}' \
-  https://api-supabase.okiabrian.my.id/rest/v1/myproject_users
+  https://api-supabase-okiabrian.my.id/rest/v1/myproject_users
 ```
 
 ## Note about the "Open" Button in Dashboard
